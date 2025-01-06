@@ -30,22 +30,61 @@ const programs = [
 
 import type { RequestHandler } from "express";
 
-const browse: RequestHandler = async (req, res) => {
-  const programsFromDB = await programRepository.readAll();
+const browse: RequestHandler = async (req, res, next) => {
+  try {
+    const programsFromDB = await programRepository.readAll();
 
-  res.json(programsFromDB);
+    res.json(programsFromDB);
+  } catch (err) {
+    next(err);
+  }
 };
 
-const read: RequestHandler = (req, res) => {
-  const parsedId = Number.parseInt(req.params.id);
+const read: RequestHandler = (req, res, next) => {
+  try {
+    const parsedId = Number.parseInt(req.params.id);
 
-  const program = programs.find((p) => p.id === parsedId);
+    const program = programs.find((p) => p.id === parsedId);
 
-  if (program != null) {
-    res.json(program);
-  } else {
-    res.sendStatus(404);
+    if (program != null) {
+      res.json(program);
+    } else {
+      res.sendStatus(404);
+    }
+  } catch (err) {
+    next(err);
   }
+};
+
+const edit: RequestHandler = async (req, res, next) => {
+  try {
+    const program = {
+      id: Number(req.params.id),
+      title: req.body.title,
+    };
+
+    const affectedRows = await programRepository.update(program);
+
+    if (affectedRows === 0) {
+      res.sendStatus(404);
+    } else {
+      res.sendStatus(204);
+    }
+  } catch (err) {
+    next(err);
+  }
+
+  const destroy: RequestHandler = async (req, res, next) => {
+    try {
+      const programId = Number(req.params.id);
+
+      await programRepository.delete(programId);
+
+      res.sendStatus(204);
+    } catch (err) {
+      next(err);
+    }
+  };
 };
 
 // Export them to import them somewhere else
