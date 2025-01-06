@@ -61,6 +61,11 @@ const edit: RequestHandler = async (req, res, next) => {
     const program = {
       id: Number(req.params.id),
       title: req.body.title,
+      synopsis: req.body.synopsis,
+      poster: req.body.poster,
+      country: req.body.country,
+      year: Number(req.params.year),
+      category_id: Number(req.params.category_id),
     };
 
     const affectedRows = await programRepository.update(program);
