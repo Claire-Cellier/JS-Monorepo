@@ -34,24 +34,14 @@ function ProgramDetails() {
           <ProgramDeleteForm id={program.id}>Supprimer</ProgramDeleteForm>
         </hgroup>
         <ul>
+          <li>{program.title}</li>
+          <li>{program.synopsis}</li>
           <li>
-            <Link to={`/programs/${program.id}`}>{program.title}</Link>
+            <img src={program.poster} alt={program.title} />
           </li>
-          <li>
-            <Link to={`/programs/${program.id}`}>{program.synopsis}</Link>
-          </li>
-          <li>
-            <Link to={`/programs/${program.id}`}>{program.poster}</Link>
-          </li>
-          <li>
-            <Link to={`/programs/${program.id}`}>{program.country}</Link>
-          </li>
-          <li>
-            <Link to={`/programs/${program.id}`}>{program.year}</Link>
-          </li>
-          <li>
-            <Link to={`/programs/${program.id}`}>{program.category_id}</Link>
-          </li>
+          <li>{program.country}</li>
+          <li>{program.year}</li>
+          <li>{program.category_id}</li>
         </ul>
       </>
     )
